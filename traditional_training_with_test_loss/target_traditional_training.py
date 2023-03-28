@@ -12,8 +12,9 @@ import matplotlib.pyplot as plt
 import csv
 
 # Obtain all the params from source machine
-target_file_name = "machine-2-8"
-target_configs = {'NUM_LAYERS': 5, 'WINDOW_SIZE': 8, 'HIDDEN_SIZE': 9, 'BATCH_SIZE': 910, 'LEARNING_RATE': 0.0008788879817068073}
+target_file_name = "machine-2-7"
+target_mod_name = "m27"
+target_configs = {'NUM_LAYERS': 2, 'WINDOW_SIZE': 7, 'HIDDEN_SIZE': 7, 'BATCH_SIZE': 774, 'LEARNING_RATE': 0.00030335778636454523}
 
 # Pre-requisites
 min_max_scaler = preprocessing.MinMaxScaler()
@@ -76,7 +77,7 @@ test_loader = torch.utils.data.DataLoader(data_utils.TensorDataset(
 # Initialise the source model, and evaluate the test set of target machine - epoch 0
 autoencoder_model = autoencoder.AutoEncoder(in_size=w_size, latent_size=z_size, num_layers=target_configs["NUM_LAYERS"])
 model_path = const.MODEL_LOCATION
-model_name = join(model_path, "ae_model_m28_from_scratch.pth")
+model_name = join(model_path, "ae_model_"+target_mod_name+"_from_scratch.pth")
 test_loss_dict = autoencoder.training(conf.N_EPOCHS, autoencoder_model, train_loader, val_loader, test_loader, target_configs["LEARNING_RATE"], model_name)
 with open('traditional_test_loss.csv', 'w') as csv_file:
     writer = csv.writer(csv_file)

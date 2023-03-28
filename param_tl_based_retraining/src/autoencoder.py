@@ -56,6 +56,8 @@ def training(epochs, autoencoder_model, train_loader, val_loader, test_loader, l
         print(f'Epoch:{0}, Test Loss: {test_loss:.4f}')
         test_loss_dict[0] = test_loss
 
+    val_loss_list = []
+
     for epoch in range(epochs):
         train_loss = 0
         for [batch] in train_loader:
@@ -76,6 +78,7 @@ def training(epochs, autoencoder_model, train_loader, val_loader, test_loader, l
                 v_loss = criterion(val_recon, val_batch)
                 val_loss += v_loss.item() * val_batch.shape[0]
             val_loss = val_loss / len(val_loader.dataset)
+            val_loss_list.append(val_loss)
 
         print(f'Epoch:{epoch + 1}, Train Loss: {train_loss:.4f}, Validation Loss: {val_loss:.4f}')
         if val_loss < best_loss:
@@ -98,6 +101,11 @@ def training(epochs, autoencoder_model, train_loader, val_loader, test_loader, l
             test_loss = test_loss / len(test_loader.dataset)
             print(f'Epoch:{epoch + 1}, Test Loss: {test_loss:.4f}')
             test_loss_dict[epoch + 1] = test_loss
+
+        # Algorithmic stop : If val_loss is not changing significantly for a slack of 5, break from the for loop
+        if len(val_loss_list) >= 5 and round(val_loss_list[-1],4) == round(val_loss_list[-5],4):
+            return test_loss_dict
+            break
 
     return test_loss_dict
 
