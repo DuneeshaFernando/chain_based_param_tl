@@ -10,12 +10,13 @@ from src.evaluation import Evaluation
 from config import config as conf
 import matplotlib.pyplot as plt
 import csv
+from datetime import datetime
 
 # Obtain all the params from source machine
-target_file_name = "machine-2-8"
-target_mod_name = "m28"
-source_mod_name = "m12"
-source_configs = {'NUM_LAYERS': 9, 'WINDOW_SIZE': 95, 'HIDDEN_SIZE': 14, 'BATCH_SIZE': 926, 'LEARNING_RATE': 0.000812013996755207}
+target_file_name = "machine-1-2"
+target_mod_name = "m12"
+source_mod_name = "m15"
+source_configs = {'NUM_LAYERS': 2, 'WINDOW_SIZE': 89, 'HIDDEN_SIZE': 1258, 'BATCH_SIZE': 177, 'LEARNING_RATE': 2.1718652959629035e-05}
 
 # Pre-requisites
 min_max_scaler = preprocessing.MinMaxScaler()
@@ -114,8 +115,10 @@ test_eval = Evaluation(processed_test_labels, predicted_labels)
 test_eval.print()
 
 # Retrain the source model based on train set of target machine + evaluate the test set of target machine - epoch n
-
+start_time = datetime.now()
 test_loss_dict = autoencoder.training(conf.N_EPOCHS, autoencoder_model, train_loader, val_loader, test_loader, source_configs["LEARNING_RATE"], target_model_name)
+end_time = datetime.now()
+print("Training time :", end_time-start_time)
 with open('param_tl_test_loss.csv', 'w') as csv_file:
     writer = csv.writer(csv_file)
     for key, value in test_loss_dict.items():

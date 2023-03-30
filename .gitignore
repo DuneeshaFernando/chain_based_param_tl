@@ -137,3 +137,5 @@ param_tl_based_retraining/param_tl_test_loss.png
 traditional_training_with_test_loss/models/*
 traditional_training_with_test_loss/traditional_test_loss.csv
 traditional_training_with_test_loss/traditional_test_loss.png
+param_tl_based_retraining/test_loss_results_csvs/
+traditional_training_with_test_loss/test_loss_results_csvs/
